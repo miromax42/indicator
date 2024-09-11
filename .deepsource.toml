@@ -5,4 +5,4 @@ name = "go"
 enabled = true
 
   [analyzers.meta]
-  import_root = "github.com/cinar/indicator"
+  import_root = "github.com/miromax42/indicator"
