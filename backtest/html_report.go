@@ -138,15 +138,19 @@ func (h *HTMLReport) Write(assetName string, currentStrategy strategy.Strategy, 
 		return fmt.Errorf("asset has not begun: %s", assetName)
 	}
 
-	// Append current strategy result for the asset.
-	h.assetResults[assetName] = append(results, &htmlReportResult{
+	result := &htmlReportResult{
 		AssetName:    assetName,
 		StrategyName: currentStrategy.Name(),
 		Action:       <-actions,
 		Since:        <-sinces,
 		Outcome:      <-outcomes * 100,
 		Transactions: <-transactions,
-	})
+	}
+
+	fmt.Printf("%+v\n", result)
+
+	// Append current strategy result for the asset.
+	h.assetResults[assetName] = append(results, result)
 
 	return nil
 }
