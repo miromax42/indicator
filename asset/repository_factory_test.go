@@ -7,7 +7,7 @@ package asset_test
 import (
 	"testing"
 
-	"github.com/cinar/indicator/v2/asset"
+	"github.com/miromax42/indicator/v2/asset"
 )
 
 func TestNewRepositoryUnknown(t *testing.T) {

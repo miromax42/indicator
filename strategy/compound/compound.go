@@ -18,7 +18,7 @@
 // advice or solicitation to buy or sell any security.
 package compound
 
-import "github.com/cinar/indicator/v2/strategy"
+import "github.com/miromax42/indicator/v2/strategy"
 
 // AllStrategies returns a slice containing references to all available compound strategies.
 func AllStrategies() []strategy.Strategy {

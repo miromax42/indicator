@@ -7,7 +7,7 @@ package asset
 import (
 	"time"
 
-	"github.com/cinar/indicator/v2/helper"
+	"github.com/miromax42/indicator/v2/helper"
 )
 
 // Snapshot captures a single observation of an asset's price

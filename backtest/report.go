@@ -5,8 +5,8 @@
 package backtest
 
 import (
-	"github.com/cinar/indicator/v2/asset"
-	"github.com/cinar/indicator/v2/strategy"
+	"github.com/miromax42/indicator/v2/asset"
+	"github.com/miromax42/indicator/v2/strategy"
 )
 
 // Report is the backtest report interface.

@@ -7,8 +7,8 @@ package strategy_test
 import (
 	"testing"
 
-	"github.com/cinar/indicator/v2/helper"
-	"github.com/cinar/indicator/v2/strategy"
+	"github.com/miromax42/indicator/v2/helper"
+	"github.com/miromax42/indicator/v2/strategy"
 )
 
 func TestOutcome(t *testing.T) {

@@ -4,7 +4,7 @@
 
 package trend
 
-import "github.com/cinar/indicator/v2/helper"
+import "github.com/miromax42/indicator/v2/helper"
 
 const (
 	// DefaultRmaPeriod is the default RMA period.

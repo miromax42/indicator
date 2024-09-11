@@ -7,8 +7,8 @@ package strategy
 import (
 	"fmt"
 
-	"github.com/cinar/indicator/v2/asset"
-	"github.com/cinar/indicator/v2/helper"
+	"github.com/miromax42/indicator/v2/asset"
+	"github.com/miromax42/indicator/v2/helper"
 )
 
 // SplitStrategy leverages two separate strategies. It utilizes the first strategy to identify potential Buy

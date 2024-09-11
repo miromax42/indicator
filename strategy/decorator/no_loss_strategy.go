@@ -7,9 +7,9 @@ package decorator
 import (
 	"fmt"
 
-	"github.com/cinar/indicator/v2/asset"
-	"github.com/cinar/indicator/v2/helper"
-	"github.com/cinar/indicator/v2/strategy"
+	"github.com/miromax42/indicator/v2/asset"
+	"github.com/miromax42/indicator/v2/helper"
+	"github.com/miromax42/indicator/v2/strategy"
 )
 
 // NoLossStrategy prevents selling an asset at a loss. It modifies the recommendations of another strategy to ensure

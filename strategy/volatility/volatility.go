@@ -19,9 +19,9 @@
 package volatility
 
 import (
-	"github.com/cinar/indicator/v2/strategy"
-	"github.com/cinar/indicator/v2/trend"
-	"github.com/cinar/indicator/v2/volatility"
+	"github.com/miromax42/indicator/v2/strategy"
+	"github.com/miromax42/indicator/v2/trend"
+	"github.com/miromax42/indicator/v2/volatility"
 )
 
 // AllStrategies returns a slice containing references to all available volatility strategies.

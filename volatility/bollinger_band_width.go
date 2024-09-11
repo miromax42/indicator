@@ -5,7 +5,7 @@
 package volatility
 
 import (
-	"github.com/cinar/indicator/v2/helper"
+	"github.com/miromax42/indicator/v2/helper"
 )
 
 // BollingerBandWidth represents the configuration parameters for calculating the Bollinger Band Width.

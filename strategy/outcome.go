@@ -4,7 +4,7 @@
 
 package strategy
 
-import "github.com/cinar/indicator/v2/helper"
+import "github.com/miromax42/indicator/v2/helper"
 
 // Outcome simulates the potential result of executing the given actions based on the provided values.
 func Outcome[T helper.Number](values <-chan T, actions <-chan Action) <-chan float64 {

@@ -8,9 +8,9 @@ import (
 	"os"
 	"testing"
 
-	"github.com/cinar/indicator/v2/asset"
-	"github.com/cinar/indicator/v2/backtest"
-	"github.com/cinar/indicator/v2/strategy/trend"
+	"github.com/miromax42/indicator/v2/asset"
+	"github.com/miromax42/indicator/v2/backtest"
+	"github.com/miromax42/indicator/v2/strategy/trend"
 )
 
 func TestBacktest(t *testing.T) {

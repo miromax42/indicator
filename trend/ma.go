@@ -5,7 +5,7 @@
 package trend
 
 import (
-	"github.com/cinar/indicator/v2/helper"
+	"github.com/miromax42/indicator/v2/helper"
 )
 
 // Ma represents the interface for the Moving Average (MA) indicators.

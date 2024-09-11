@@ -7,7 +7,7 @@ package helper_test
 import (
 	"testing"
 
-	"github.com/cinar/indicator/v2/helper"
+	"github.com/miromax42/indicator/v2/helper"
 )
 
 func TestSqrt(t *testing.T) {

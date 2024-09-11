@@ -8,7 +8,7 @@ import (
 	"fmt"
 	"math"
 
-	"github.com/cinar/indicator/v2/helper"
+	"github.com/miromax42/indicator/v2/helper"
 )
 
 // Hma represents the configuration parameters for calculating the Hull Moving Average (HMA). Developed by

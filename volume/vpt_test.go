@@ -7,8 +7,8 @@ package volume_test
 import (
 	"testing"
 
-	"github.com/cinar/indicator/v2/helper"
-	"github.com/cinar/indicator/v2/volume"
+	"github.com/miromax42/indicator/v2/helper"
+	"github.com/miromax42/indicator/v2/volume"
 )
 
 func TestVpt(t *testing.T) {

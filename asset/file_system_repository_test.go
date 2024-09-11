@@ -12,8 +12,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/cinar/indicator/v2/asset"
-	"github.com/cinar/indicator/v2/helper"
+	"github.com/miromax42/indicator/v2/asset"
+	"github.com/miromax42/indicator/v2/helper"
 )
 
 var repositoryBase = "testdata/repository"

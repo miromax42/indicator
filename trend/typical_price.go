@@ -5,7 +5,7 @@
 package trend
 
 import (
-	"github.com/cinar/indicator/v2/helper"
+	"github.com/miromax42/indicator/v2/helper"
 )
 
 // TypicalPrice represents the configuration parameters for calculating the Typical Price.

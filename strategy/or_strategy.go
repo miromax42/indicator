@@ -5,8 +5,8 @@
 package strategy
 
 import (
-	"github.com/cinar/indicator/v2/asset"
-	"github.com/cinar/indicator/v2/helper"
+	"github.com/miromax42/indicator/v2/asset"
+	"github.com/miromax42/indicator/v2/helper"
 )
 
 // OrStrategy emits actionable recommendations when **at least one** strategy in the group recommends an

@@ -7,10 +7,10 @@ package volatility
 import (
 	"fmt"
 
-	"github.com/cinar/indicator/v2/asset"
-	"github.com/cinar/indicator/v2/helper"
-	"github.com/cinar/indicator/v2/strategy"
-	"github.com/cinar/indicator/v2/volatility"
+	"github.com/miromax42/indicator/v2/asset"
+	"github.com/miromax42/indicator/v2/helper"
+	"github.com/miromax42/indicator/v2/strategy"
+	"github.com/miromax42/indicator/v2/volatility"
 )
 
 // SuperTrendStrategy represents the configuration parameters for calculating the Super Trend strategy. A closing

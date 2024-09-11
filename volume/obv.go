@@ -4,7 +4,7 @@
 
 package volume
 
-import "github.com/cinar/indicator/v2/helper"
+import "github.com/miromax42/indicator/v2/helper"
 
 // Obv holds configuration parameters for calculating the On-Balance Volume (OBV). It is a technical trading momentum
 // indicator that uses volume flow to predict changes in asset price.

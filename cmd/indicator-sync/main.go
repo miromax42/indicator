@@ -12,7 +12,7 @@ import (
 	"os"
 	"time"
 
-	"github.com/cinar/indicator/v2/asset"
+	"github.com/miromax42/indicator/v2/asset"
 )
 
 func main() {

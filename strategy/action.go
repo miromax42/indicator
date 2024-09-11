@@ -4,7 +4,7 @@
 
 package strategy
 
-import "github.com/cinar/indicator/v2/helper"
+import "github.com/miromax42/indicator/v2/helper"
 
 // Action represents the different action categories that a
 // strategy can recommend.

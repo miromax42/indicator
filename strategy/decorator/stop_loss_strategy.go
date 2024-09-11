@@ -7,9 +7,9 @@ package decorator
 import (
 	"fmt"
 
-	"github.com/cinar/indicator/v2/asset"
-	"github.com/cinar/indicator/v2/helper"
-	"github.com/cinar/indicator/v2/strategy"
+	"github.com/miromax42/indicator/v2/asset"
+	"github.com/miromax42/indicator/v2/helper"
+	"github.com/miromax42/indicator/v2/strategy"
 )
 
 // StopLossStrategy prevents a loss by recommending a sell action when the assets drops below the given threshold.

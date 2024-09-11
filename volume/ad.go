@@ -4,7 +4,7 @@
 
 package volume
 
-import "github.com/cinar/indicator/v2/helper"
+import "github.com/miromax42/indicator/v2/helper"
 
 // Ad holds configuration parameters for calculating Accumulation/Distribution (A/D). It is a cumulative
 // indicator that uses volume and price to assess whether an asset is being accumulated or distributed.

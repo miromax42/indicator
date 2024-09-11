@@ -19,8 +19,8 @@
 package strategy
 
 import (
-	"github.com/cinar/indicator/v2/asset"
-	"github.com/cinar/indicator/v2/helper"
+	"github.com/miromax42/indicator/v2/asset"
+	"github.com/miromax42/indicator/v2/helper"
 )
 
 // Strategy defines a shared interface for trading strategies.

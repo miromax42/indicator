@@ -4,7 +4,7 @@
 
 package trend
 
-import "github.com/cinar/indicator/v2/helper"
+import "github.com/miromax42/indicator/v2/helper"
 
 // MovingMax represents the configuration parameters for calculating the
 // Moving Max over the specified period.

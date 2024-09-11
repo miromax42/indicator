@@ -12,7 +12,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/cinar/indicator/v2/helper"
+	"github.com/miromax42/indicator/v2/helper"
 )
 
 // FileSystemRepository stores and retrieves asset snapshots using

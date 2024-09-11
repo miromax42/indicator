@@ -5,9 +5,9 @@
 package momentum
 
 import (
-	"github.com/cinar/indicator/v2/helper"
-	"github.com/cinar/indicator/v2/trend"
-	"github.com/cinar/indicator/v2/volume"
+	"github.com/miromax42/indicator/v2/helper"
+	"github.com/miromax42/indicator/v2/trend"
+	"github.com/miromax42/indicator/v2/volume"
 )
 
 const (

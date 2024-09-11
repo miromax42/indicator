@@ -4,7 +4,7 @@
 
 package volume
 
-import "github.com/cinar/indicator/v2/helper"
+import "github.com/miromax42/indicator/v2/helper"
 
 // Mfv holds configuration parameters for calculating Money Flow Volume (MFV), a volume-based indicator that
 // incorporates the Money Flow Multiplier (MFM) to gauge the intensity of buying and selling pressure. MFV

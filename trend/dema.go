@@ -4,7 +4,7 @@
 
 package trend
 
-import "github.com/cinar/indicator/v2/helper"
+import "github.com/miromax42/indicator/v2/helper"
 
 // Dema represents the parameters for calculating the Double Exponential Moving Average (DEMA).
 // A bullish cross occurs when DEMA with 5 days period moves above DEMA with 35 days period.
