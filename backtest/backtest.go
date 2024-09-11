@@ -21,8 +21,8 @@ package backtest
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"log"
+	"os"
 	"sync"
 	"time"
 
@@ -145,7 +145,7 @@ func writeResultsToFile(filename string, allResults []Result) error {
 	}
 
 	// Write the JSON data to a file
-	if err := ioutil.WriteFile(filename, data, 0644); err != nil {
+	if err := os.WriteFile(filename, data, 0644); err != nil {
 		return fmt.Errorf("unable to write to file: %w", err)
 	}
 
