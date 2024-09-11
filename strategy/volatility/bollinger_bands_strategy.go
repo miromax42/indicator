@@ -5,6 +5,8 @@
 package volatility
 
 import (
+	"fmt"
+
 	"github.com/miromax42/indicator/v2/asset"
 	"github.com/miromax42/indicator/v2/helper"
 	"github.com/miromax42/indicator/v2/strategy"
@@ -29,8 +31,8 @@ func NewBollingerBandsStrategy() *BollingerBandsStrategy {
 }
 
 // Name returns the name of the strategy.
-func (*BollingerBandsStrategy) Name() string {
-	return "Bollinger Bands Strategy"
+func (b *BollingerBandsStrategy) Name() string {
+	return fmt.Sprintf("BollingerBandsStrategy(%d)", b.BollingerBands.Period)
 }
 
 // Compute processes the provided asset snapshots and generates a stream of actionable recommendations.

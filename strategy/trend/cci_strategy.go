@@ -5,6 +5,8 @@
 package trend
 
 import (
+	"fmt"
+
 	"github.com/miromax42/indicator/v2/asset"
 	"github.com/miromax42/indicator/v2/helper"
 	"github.com/miromax42/indicator/v2/strategy"
@@ -29,8 +31,8 @@ func NewCciStrategy() *CciStrategy {
 }
 
 // Name returns the name of the strategy.
-func (*CciStrategy) Name() string {
-	return "CCI Strategy"
+func (t *CciStrategy) Name() string {
+	return fmt.Sprintf("CCI Strategy(%d)", t.Cci.Period)
 }
 
 // Compute processes the provided asset snapshots and generates a stream of actionable recommendations.
