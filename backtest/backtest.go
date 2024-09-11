@@ -117,12 +117,12 @@ func (b *Backtest) Run() error {
 
 	// Wait for all workers to finish.
 	wg.Wait()
+	close(resultsStream)
 
 	var allResults []Result
 	for results := range resultsStream {
 		allResults = append(allResults, results...)
 	}
-	close(resultsStream)
 
 	if err = writeResultsToFile("cmd/test/results.json", allResults); err != nil {
 		return fmt.Errorf("unable to write results.json: %w", err)
