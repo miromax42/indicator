@@ -19,7 +19,9 @@
 package backtest
 
 import (
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"sync"
 	"time"
@@ -103,14 +105,28 @@ func (b *Backtest) Run() error {
 	// Run the backtest workers.
 	names := helper.SliceToChan(b.Names)
 	wg := &sync.WaitGroup{}
+	resultsStream := make(chan []Result, b.Workers)
 
 	for i := 0; i < b.Workers; i++ {
 		wg.Add(1)
-		go b.worker(names, wg)
+		go func() {
+			results := b.worker(names, wg)
+			resultsStream <- results
+		}()
 	}
 
 	// Wait for all workers to finish.
 	wg.Wait()
+
+	var allResults []Result
+	for results := range resultsStream {
+		allResults = append(allResults, results...)
+	}
+	close(resultsStream)
+
+	if err = writeResultsToFile("cmd/test/results.json", allResults); err != nil {
+		return fmt.Errorf("unable to write results.json: %w", err)
+	}
 
 	// End report.
 	err = b.report.End()
@@ -121,10 +137,25 @@ func (b *Backtest) Run() error {
 	return nil
 }
 
+func writeResultsToFile(filename string, allResults []Result) error {
+	// Marshal the results into JSON
+	data, err := json.Marshal(allResults)
+	if err != nil {
+		return fmt.Errorf("unable to marshal results: %w", err)
+	}
+
+	// Write the JSON data to a file
+	if err := ioutil.WriteFile(filename, data, 0644); err != nil {
+		return fmt.Errorf("unable to write to file: %w", err)
+	}
+
+	return nil
+}
+
 // worker is a backtesting worker that concurrently executes backtests for individual
 // assets. It receives asset names from the provided channel, and performs backtests
 // using the given strategies.
-func (b *Backtest) worker(names <-chan string, wg *sync.WaitGroup) {
+func (b *Backtest) worker(names <-chan string, wg *sync.WaitGroup) []Result {
 	defer wg.Done()
 
 	since := time.Now().AddDate(0, 0, -b.LastDays)
@@ -164,4 +195,6 @@ func (b *Backtest) worker(names <-chan string, wg *sync.WaitGroup) {
 			log.Printf("Unable to asset end for %s: %v", name, err)
 		}
 	}
+
+	return b.report.(*HTMLReport).Results
 }

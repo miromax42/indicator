@@ -50,6 +50,15 @@ type HTMLReport struct {
 
 	// DateFormat is the date format that is used in the reports.
 	DateFormat string
+
+	Results []Result
+}
+
+type Result struct {
+	Asset        string  `json:"asset"`
+	Strategy     string  `json:"strategy"`
+	Outcome      float64 `json:"outcome"`
+	Transactions int     `json:"transactions"`
 }
 
 // htmlReportResult encapsulates the outcome of running a strategy.
@@ -147,8 +156,6 @@ func (h *HTMLReport) Write(assetName string, currentStrategy strategy.Strategy, 
 		Transactions: <-transactions,
 	}
 
-	fmt.Printf("%+v\n", result)
-
 	// Append current strategy result for the asset.
 	h.assetResults[assetName] = append(results, result)
 
@@ -160,6 +167,15 @@ func (h *HTMLReport) AssetEnd(name string) error {
 	results, ok := h.assetResults[name]
 	if !ok {
 		return fmt.Errorf("asset has not begun: %s", name)
+	}
+
+	for _, result := range results {
+		h.Results = append(h.Results, Result{
+			Asset:        result.AssetName,
+			Strategy:     result.StrategyName,
+			Outcome:      result.Outcome,
+			Transactions: result.Transactions,
+		})
 	}
 
 	delete(h.assetResults, name)
