@@ -5,6 +5,8 @@
 package trend
 
 import (
+	"fmt"
+
 	"github.com/miromax42/indicator/v2/asset"
 	"github.com/miromax42/indicator/v2/helper"
 	"github.com/miromax42/indicator/v2/strategy"
@@ -29,8 +31,8 @@ func NewKdjStrategy() *KdjStrategy {
 }
 
 // Name returns the name of the strategy.
-func (*KdjStrategy) Name() string {
-	return "KDJ Strategy"
+func (kdj *KdjStrategy) Name() string {
+	return fmt.Sprintf("KDJ(%d, %d,%d,%d)", kdj.Kdj.Sma1.Period, kdj.Kdj.Sma2.Period, kdj.Kdj.MovingMin.Period, kdj.Kdj.MovingMax.Period)
 }
 
 // Compute processes the provided asset snapshots and generates a

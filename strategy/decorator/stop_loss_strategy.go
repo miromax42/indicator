@@ -33,7 +33,7 @@ func NewStopLossStrategy(innerStrategy strategy.Strategy, percentage float64) *S
 
 // Name returns the name of the strategy.
 func (s *StopLossStrategy) Name() string {
-	return fmt.Sprintf("Stop Loss Strategy (%0.0f, %s)", s.Percentage*100, s.InnertStrategy.Name())
+	return fmt.Sprintf("SL(%0.0f, %s)", s.Percentage*100, s.InnertStrategy.Name())
 }
 
 // Compute processes the provided asset snapshots and generates a stream of actionable recommendations.
