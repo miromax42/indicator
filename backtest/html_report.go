@@ -13,6 +13,7 @@ import (
 	"path"
 	"path/filepath"
 	"slices"
+	"sync"
 	"text/template"
 	"time"
 
@@ -43,6 +44,7 @@ type HTMLReport struct {
 
 	// assetResults is the mapping from the asset name to strategy results.
 	assetResults map[string][]*htmlReportResult
+	muResults    sync.Mutex
 
 	// bestResults is the best results for each asset.
 	bestResults []*htmlReportResult
@@ -113,6 +115,9 @@ func (h *HTMLReport) Begin(assetNames []string, _ []strategy.Strategy) error {
 
 // AssetBegin is called when backtesting for the given asset begins.
 func (h *HTMLReport) AssetBegin(name string, strategies []strategy.Strategy) error {
+	h.muResults.Lock()
+	defer h.muResults.Unlock()
+
 	_, ok := h.assetResults[name]
 	if ok {
 		return fmt.Errorf("asset has already begun: %s", name)
