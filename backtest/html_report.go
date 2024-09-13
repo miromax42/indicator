@@ -26,6 +26,8 @@ const (
 	DefaultWriteStrategyReports = true
 )
 
+var jsonPath string
+
 //go:embed "html_report.tmpl"
 var htmlReportTmpl string
 
@@ -83,7 +85,11 @@ type htmlReportResult struct {
 }
 
 // NewHTMLReport initializes a new HTML report instance.
-func NewHTMLReport(outputDir string) *HTMLReport {
+func NewHTMLReport(outputDir string, withJsonPath ...string) *HTMLReport {
+	if len(withJsonPath) > 0 {
+		jsonPath = withJsonPath[0]
+	}
+
 	return &HTMLReport{
 		outputDir:            outputDir,
 		assetResults:         make(map[string][]*htmlReportResult),

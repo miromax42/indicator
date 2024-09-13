@@ -124,8 +124,10 @@ func (b *Backtest) Run() error {
 		allResults = append(allResults, results...)
 	}
 
-	if err = writeResultsToFile("cmd/test/results.json", allResults); err != nil {
-		return fmt.Errorf("unable to write results.json: %w", err)
+	if jsonPath != "" {
+		if err = writeResultsToFile(jsonPath, allResults); err != nil {
+			return fmt.Errorf("unable to write results.json: %w", err)
+		}
 	}
 
 	// End report.
