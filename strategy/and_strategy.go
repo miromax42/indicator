@@ -108,3 +108,19 @@ func AllAndStrategies(strategies []Strategy) []Strategy {
 
 	return andStrategies
 }
+
+func AllAndStrategiesWith(strategies1 []Strategy, strategies2 []Strategy) []Strategy {
+	andStrategies := make([]Strategy, 0, len(strategies1)*len(strategies1))
+
+	m := make(map[string]string)
+	for _, first := range strategies1 {
+		for _, second := range strategies2 {
+			andStrategy := NewAndStrategy(fmt.Sprintf("%s and %s", first.Name(), second.Name()))
+			andStrategy.Strategies = []Strategy{first, second}
+			andStrategies = append(andStrategies, andStrategy)
+			m[first.Name()] = second.Name()
+		}
+	}
+
+	return andStrategies
+}
