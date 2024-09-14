@@ -21,6 +21,8 @@ type StopLossStrategy struct {
 
 	// Percentage is the loss threshold in percentage.
 	Percentage float64
+
+	NameSt string
 }
 
 // NewStopLossStrategy function initializes a new stop loss strategy instance.
@@ -33,7 +35,15 @@ func NewStopLossStrategy(innerStrategy strategy.Strategy, percentage float64) *S
 
 // Name returns the name of the strategy.
 func (s *StopLossStrategy) Name() string {
-	return fmt.Sprintf("SL(%0.0f, %s)", s.Percentage*100, s.InnertStrategy.Name())
+	if s.NameSt == "" {
+		return fmt.Sprintf("SL(%0.0f, %s)", s.Percentage*100, s.InnertStrategy.Name())
+	}
+
+	return fmt.Sprintf("SL(%0.0f, %s)", s.Percentage*100, s.NameSt)
+}
+
+func (s *StopLossStrategy) SetName(name string) {
+	s.NameSt = name
 }
 
 // Compute processes the provided asset snapshots and generates a stream of actionable recommendations.

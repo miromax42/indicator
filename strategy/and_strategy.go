@@ -115,6 +115,11 @@ func AllAndStrategiesWith(strategies1 []Strategy, strategies2 []Strategy) []Stra
 	m := make(map[string]string)
 	for _, first := range strategies1 {
 		for _, second := range strategies2 {
+			if first == second {
+				andStrategies = append(andStrategies, first)
+				continue
+			}
+
 			andStrategy := NewAndStrategy(fmt.Sprintf("%s and %s", first.Name(), second.Name()))
 			andStrategy.Strategies = []Strategy{first, second}
 			andStrategies = append(andStrategies, andStrategy)
