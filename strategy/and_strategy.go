@@ -94,12 +94,18 @@ func (a *AndStrategy) Report(c <-chan *asset.Snapshot) *helper.Report {
 func AllAndStrategies(strategies []Strategy) []Strategy {
 	andStrategies := make([]Strategy, 0, len(strategies)*len(strategies))
 
+	m := make(map[string]string)
 	for _, first := range strategies {
 		for _, second := range strategies {
 			if first != second {
+				if firstName := m[second.Name()]; firstName == first.Name() {
+					continue
+				}
+
 				andStrategy := NewAndStrategy(fmt.Sprintf("%s and %s", first.Name(), second.Name()))
 				andStrategy.Strategies = []Strategy{first, second}
 				andStrategies = append(andStrategies, andStrategy)
+				m[first.Name()] = second.Name()
 			}
 		}
 	}
