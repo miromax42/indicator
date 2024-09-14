@@ -95,17 +95,9 @@ func AllAndStrategies(strategies []Strategy) []Strategy {
 	andStrategies := make([]Strategy, 0, len(strategies)*len(strategies))
 
 	m := make(map[string]string)
-	for _, first := range strategies {
-		for _, second := range strategies {
-			if first == second {
-				continue
-			}
-			if firstName := m[second.Name()]; firstName == first.Name() {
-				continue
-			}
-			if secondName := m[first.Name()]; secondName == second.Name() {
-				continue
-			}
+	for i, first := range strategies {
+		for j := i + 1; j < len(strategies); j++ {
+			second := strategies[j]
 
 			andStrategy := NewAndStrategy(fmt.Sprintf("%s and %s", first.Name(), second.Name()))
 			andStrategy.Strategies = []Strategy{first, second}
