@@ -39,7 +39,7 @@ func (s *StopLossStrategy) Name() string {
 		return fmt.Sprintf("SL(%0.0f, %s)", s.Percentage*100, s.InnertStrategy.Name())
 	}
 
-	return fmt.Sprintf("SL(%0.0f, %s)", s.Percentage*100, s.NameSt)
+	return s.NameSt
 }
 
 func (s *StopLossStrategy) SetName(name string) {
