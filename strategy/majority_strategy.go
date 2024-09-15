@@ -36,16 +36,16 @@ func NewMajorityStrategyWith(name string, strategies []Strategy) *MajorityStrate
 	}
 }
 
-func NewMajorityStrategyWithV2(strategies []Strategy) *MajorityStrategy {
+func NewMajorityStrategyWithV2(ss ...Strategy) *MajorityStrategy {
 	var names []string
-	for _, s := range strategies {
+	for _, s := range ss {
 		names = append(names, s.Name())
 	}
 
 	name := fmt.Sprintf("MJ(%s)", strings.Join(names, ","))
 
 	return &MajorityStrategy{
-		Strategies: strategies,
+		Strategies: ss,
 		name:       name,
 	}
 }
