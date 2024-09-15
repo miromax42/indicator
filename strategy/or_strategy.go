@@ -5,6 +5,9 @@
 package strategy
 
 import (
+	"fmt"
+	"strings"
+
 	"github.com/miromax42/indicator/v2/asset"
 	"github.com/miromax42/indicator/v2/helper"
 )
@@ -25,6 +28,20 @@ type OrStrategy struct {
 func NewOrStrategy(name string) *OrStrategy {
 	return &OrStrategy{
 		Strategies: []Strategy{},
+		name:       name,
+	}
+}
+
+func NewOrStrategyWith(ss ...Strategy) *OrStrategy {
+	var names []string
+	for _, s := range ss {
+		names = append(names, s.Name())
+	}
+
+	name := fmt.Sprintf("OR(%s)", strings.Join(names, ","))
+
+	return &OrStrategy{
+		Strategies: ss,
 		name:       name,
 	}
 }

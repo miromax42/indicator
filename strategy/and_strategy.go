@@ -6,6 +6,7 @@ package strategy
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/miromax42/indicator/v2/asset"
 	"github.com/miromax42/indicator/v2/helper"
@@ -28,6 +29,20 @@ type AndStrategy struct {
 func NewAndStrategy(name string) *AndStrategy {
 	return &AndStrategy{
 		Strategies: []Strategy{},
+		name:       name,
+	}
+}
+
+func NewAndStrategyWith(ss ...Strategy) *AndStrategy {
+	var names []string
+	for _, s := range ss {
+		names = append(names, s.Name())
+	}
+
+	name := fmt.Sprintf("AND(%s)", strings.Join(names, ","))
+
+	return &AndStrategy{
+		Strategies: ss,
 		name:       name,
 	}
 }
