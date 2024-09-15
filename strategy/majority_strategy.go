@@ -5,6 +5,9 @@
 package strategy
 
 import (
+	"fmt"
+	"strings"
+
 	"github.com/miromax42/indicator/v2/asset"
 	"github.com/miromax42/indicator/v2/helper"
 )
@@ -27,6 +30,20 @@ func NewMajorityStrategy(name string) *MajorityStrategy {
 
 // NewMajorityStrategyWith function initializes a majority strategies group with the given name and strategies.
 func NewMajorityStrategyWith(name string, strategies []Strategy) *MajorityStrategy {
+	return &MajorityStrategy{
+		Strategies: strategies,
+		name:       name,
+	}
+}
+
+func NewMajorityStrategyWithV2(strategies []Strategy) *MajorityStrategy {
+	var names []string
+	for _, s := range strategies {
+		names = append(names, s.Name())
+	}
+
+	name := fmt.Sprintf("MJ(%s)", strings.Join(names, ","))
+
 	return &MajorityStrategy{
 		Strategies: strategies,
 		name:       name,
