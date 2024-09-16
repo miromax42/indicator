@@ -153,6 +153,8 @@ func (h *HTMLReport) Write(assetName string, currentStrategy strategy.Strategy, 
 	}
 
 	// Get asset strategy results.
+	h.muResults.Lock()
+	defer h.muResults.Unlock()
 	results, ok := h.assetResults[assetName]
 	if !ok {
 		return fmt.Errorf("asset has not begun: %s", assetName)
@@ -175,6 +177,8 @@ func (h *HTMLReport) Write(assetName string, currentStrategy strategy.Strategy, 
 
 // AssetEnd is called when backtesting for the given asset ends.
 func (h *HTMLReport) AssetEnd(name string) error {
+	h.muResults.Lock()
+	defer h.muResults.Unlock()
 	results, ok := h.assetResults[name]
 	if !ok {
 		return fmt.Errorf("asset has not begun: %s", name)
