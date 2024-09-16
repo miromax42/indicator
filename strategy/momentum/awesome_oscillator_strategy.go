@@ -5,6 +5,8 @@
 package momentum
 
 import (
+	"fmt"
+
 	"github.com/miromax42/indicator/v2/asset"
 	"github.com/miromax42/indicator/v2/helper"
 	"github.com/miromax42/indicator/v2/momentum"
@@ -27,8 +29,8 @@ func NewAwesomeOscillatorStrategy() *AwesomeOscillatorStrategy {
 }
 
 // Name returns the name of the strategy.
-func (*AwesomeOscillatorStrategy) Name() string {
-	return "Awesome Oscillator Strategy"
+func (a *AwesomeOscillatorStrategy) Name() string {
+	return fmt.Sprintf("AOS(%d, %d)", a.AwesomeOscillator.ShortSma.Period, a.AwesomeOscillator.LongSma.Period)
 }
 
 // Compute processes the provided asset snapshots and generates a stream of actionable recommendations.
