@@ -111,7 +111,7 @@ func (b *Backtest) Run() error {
 		wg.Add(1)
 
 		go func() {
-			wg.Done()
+			defer wg.Done()
 			results := b.worker(names)
 			resultsStream <- results
 		}()
