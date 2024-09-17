@@ -18,12 +18,13 @@ type DelayStrategy struct {
 func NewDelayStrategy(period int, innerStrategy strategy.Strategy) *DelayStrategy {
 	return &DelayStrategy{
 		InnertStrategy: innerStrategy,
+		Period:         period,
 	}
 }
 
 // Name returns the name of the strategy.
 func (n *DelayStrategy) Name() string {
-	return fmt.Sprintf("Delay(%s)", n.InnertStrategy.Name())
+	return fmt.Sprintf("D(%s)", n.InnertStrategy.Name())
 }
 
 // Compute processes the provided asset snapshots and generates a stream of actionable recommendations.
@@ -33,7 +34,6 @@ func (n *DelayStrategy) Compute(snapshots <-chan *asset.Snapshot) <-chan strateg
 	innerActions := n.InnertStrategy.Compute(snapshotsSplice[0])
 	closings := asset.SnapshotsAsClosings(snapshotsSplice[1])
 	var cnt int
-
 	return helper.Operate(innerActions, closings, func(action strategy.Action, closing float64) strategy.Action {
 		cnt++
 		if cnt <= n.Period {
