@@ -109,6 +109,8 @@ func (b *Backtest) Run() error {
 
 	for i := 0; i < b.Workers; i++ {
 		wg.Add(1)
+		defer wg.Done()
+
 		go func() {
 			results := b.worker(names, wg)
 			resultsStream <- results
