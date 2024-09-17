@@ -111,8 +111,8 @@ func (b *Backtest) Run() error {
 		wg.Add(1)
 
 		go func() {
-			defer wg.Done()
-			results := b.worker(names, wg)
+			wg.Done()
+			results := b.worker(names)
 			resultsStream <- results
 		}()
 	}
@@ -159,9 +159,7 @@ func writeResultsToFile(filename string, allResults []Result) error {
 // worker is a backtesting worker that concurrently executes backtests for individual
 // assets. It receives asset names from the provided channel, and performs backtests
 // using the given strategies.
-func (b *Backtest) worker(names <-chan string, wg *sync.WaitGroup) []Result {
-	defer wg.Done()
-
+func (b *Backtest) worker(names <-chan string) []Result {
 	since := time.Now().AddDate(0, 0, -b.LastDays)
 
 	for name := range names {
