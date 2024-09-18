@@ -25,18 +25,21 @@ import "github.com/miromax42/indicator/v2/helper"
 //}
 
 func Outcome[T helper.Number](values <-chan T, actions <-chan Action) <-chan float64 {
-	balance := 1.0
-	shares := 0.0
+	balance := 0.
+	shares := 0.
+	var bought bool
 
 	return helper.Operate(values, actions, func(value T, action Action) float64 {
-		if balance > 0 && action == Buy && shares == 0 {
-			shares = balance / float64(value)
-			balance = 0
-		} else if balance == 0 && shares > 0 && action == Sell {
-			balance = shares * float64(value)
+		if action == Buy && !bought {
+			shares = 1 / float64(value)
+			balance -= 1
+			bought = true
+		} else if bought && action == Sell {
+			balance += shares * float64(value)
 			shares = 0
+			bought = false
 		}
 
-		return balance + (shares * float64(value)) - 1.0
+		return balance + (shares * float64(value))
 	})
 }
