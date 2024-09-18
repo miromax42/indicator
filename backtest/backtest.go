@@ -129,7 +129,7 @@ func (b *Backtest) Run() error {
 	}
 
 	if b.JsonPath != "" {
-		if err = writeResultsToFile(jsonPath, allResults); err != nil {
+		if err = writeResultsToFile(b.JsonPath, allResults); err != nil {
 			return fmt.Errorf("unable to write results.json: %w", err)
 		}
 	}
