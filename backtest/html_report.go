@@ -8,7 +8,6 @@ import (
 	// Go embed report template.
 	_ "embed"
 	"fmt"
-	"log"
 	"os"
 	"path"
 	"path/filepath"
@@ -202,8 +201,6 @@ func (h *HTMLReport) AssetEnd(name string) error {
 
 	bestResult := results[0]
 
-	// Report the best result for the current asset.
-	log.Printf("Best outcome for %s is %.2f%% with %s.", name, bestResult.Outcome, bestResult.StrategyName)
 	h.bestResults = append(h.bestResults, bestResult)
 
 	// Write the asset report.

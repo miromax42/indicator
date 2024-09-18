@@ -62,6 +62,8 @@ type Backtest struct {
 	LastDays int
 
 	JsonPath string
+
+	NoLog bool
 }
 
 // NewBacktest function initializes a new backtest instance.
@@ -165,7 +167,10 @@ func (b *Backtest) worker(names <-chan string) []Result {
 	since := time.Now().AddDate(0, 0, -b.LastDays)
 
 	for name := range names {
-		log.Printf("Backtesting %s...", name)
+		if !b.NoLog {
+			log.Printf("Backtesting %s...", name)
+		}
+
 		snapshots, err := b.repository.GetSince(name, since)
 		if err != nil {
 			log.Printf("Unable to retrieve the snapshots for %s: %v", name, err)
