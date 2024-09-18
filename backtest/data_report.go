@@ -5,6 +5,8 @@
 package backtest
 
 import (
+	"sync"
+
 	"github.com/miromax42/indicator/v2/asset"
 	"github.com/miromax42/indicator/v2/helper"
 	"github.com/miromax42/indicator/v2/strategy"
@@ -31,7 +33,8 @@ type DataStrategyResult struct {
 // DataReport is the bactest data report enablign programmatic access to the backtest results.
 type DataReport struct {
 	// Results are the backtest results for the assets.
-	Results map[string][]*DataStrategyResult
+	Results   map[string][]*DataStrategyResult
+	muResults sync.Mutex
 }
 
 // NewDataReport initializes a new data report instance.
@@ -48,6 +51,8 @@ func (*DataReport) Begin(_ []string, _ []strategy.Strategy) error {
 
 // AssetBegin is called when backtesting for the given asset begins.
 func (d *DataReport) AssetBegin(name string, strategies []strategy.Strategy) error {
+	d.muResults.Lock()
+	defer d.muResults.Unlock()
 	d.Results[name] = make([]*DataStrategyResult, 0, len(strategies))
 	return nil
 }
@@ -70,6 +75,8 @@ func (d *DataReport) Write(assetName string, currentStrategy strategy.Strategy, 
 		Transactions: transactions,
 	}
 
+	d.muResults.Lock()
+	defer d.muResults.Unlock()
 	d.Results[assetName] = append(d.Results[assetName], result)
 
 	return nil
