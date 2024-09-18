@@ -54,8 +54,14 @@ func NewDemaStrategy() *DemaStrategy {
 }
 
 // Name returns the name of the strategy.
-func (*DemaStrategy) Name() string {
-	return "DEMA Strategy"
+func (d *DemaStrategy) Name() string {
+	text := fmt.Sprintf("DEMA(%d,%d,%d,%d)",
+		d.Dema1.Ema1.Period,
+		d.Dema1.Ema2.Period,
+		d.Dema2.Ema1.Period,
+		d.Dema2.Ema2.Period,
+	)
+	return text
 }
 
 // Compute processes the provided asset snapshots and generates a
