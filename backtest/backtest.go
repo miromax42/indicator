@@ -60,6 +60,8 @@ type Backtest struct {
 
 	// LastDays is the number of days backtest should go back.
 	LastDays int
+
+	JsonPath string
 }
 
 // NewBacktest function initializes a new backtest instance.
@@ -126,7 +128,7 @@ func (b *Backtest) Run() error {
 		allResults = append(allResults, results...)
 	}
 
-	if jsonPath != "" {
+	if b.JsonPath != "" {
 		if err = writeResultsToFile(jsonPath, allResults); err != nil {
 			return fmt.Errorf("unable to write results.json: %w", err)
 		}
