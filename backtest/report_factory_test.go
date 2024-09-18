@@ -7,7 +7,7 @@ package backtest_test
 import (
 	"testing"
 
-	"github.com/cinar/indicator/v2/backtest"
+	"github.com/miromax42/indicator/v2/backtest"
 )
 
 func TestNewReportUnknown(t *testing.T) {

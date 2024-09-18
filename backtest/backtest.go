@@ -21,7 +21,6 @@ package backtest
 import (
 	"fmt"
 	"log/slog"
-	"os"
 	"sync"
 	"time"
 

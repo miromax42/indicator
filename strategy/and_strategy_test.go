@@ -67,7 +67,10 @@ func TestAllAndStrategies(t *testing.T) {
 
 	allAndStrategies := strategy.AllAndStrategies(strategies)
 
-	expected := len(strategies)*len(strategies) - len(strategies)
+	expected := 0
+	for i := range len(allAndStrategies) {
+		expected += i + 1
+	}
 	actual := len(allAndStrategies)
 
 	if actual != expected {

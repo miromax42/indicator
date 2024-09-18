@@ -7,10 +7,10 @@ package backtest_test
 import (
 	"testing"
 
-	"github.com/cinar/indicator/v2/asset"
-	"github.com/cinar/indicator/v2/backtest"
-	"github.com/cinar/indicator/v2/helper"
-	"github.com/cinar/indicator/v2/strategy"
+	"github.com/miromax42/indicator/v2/asset"
+	"github.com/miromax42/indicator/v2/backtest"
+	"github.com/miromax42/indicator/v2/helper"
+	"github.com/miromax42/indicator/v2/strategy"
 )
 
 func TestDataReport(t *testing.T) {
