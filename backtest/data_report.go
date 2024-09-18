@@ -61,17 +61,14 @@ func (d *DataReport) AssetBegin(name string, strategies []strategy.Strategy) err
 func (d *DataReport) Write(assetName string, currentStrategy strategy.Strategy, snapshots <-chan *asset.Snapshot, actions <-chan strategy.Action, outcomes <-chan float64) error {
 	go helper.Drain(snapshots)
 
-	actionsSplice := helper.Duplicate(actions, 2)
-
 	outcome := helper.Last(outcomes, 1)
-	lastAction := helper.Last(actionsSplice[0], 1)
-	transactions := helper.ChanToSlice(actionsSplice[1])
+	transactions := helper.ChanToSlice(actions)
 
 	result := &DataStrategyResult{
 		Asset:        assetName,
 		Strategy:     currentStrategy,
 		Outcome:      <-outcome * 100,
-		Action:       <-lastAction,
+		Action:       strategy.Hold,
 		Transactions: transactions,
 	}
 
