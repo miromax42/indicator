@@ -19,9 +19,8 @@
 package backtest
 
 import (
-	"encoding/json"
 	"fmt"
-	"log"
+	"log/slog"
 	"os"
 	"sync"
 	"time"
@@ -61,9 +60,8 @@ type Backtest struct {
 	// LastDays is the number of days backtest should go back.
 	LastDays int
 
-	JsonPath string
-
-	NoLog bool
+	// Logger is the slog logger instance.
+	Logger *slog.Logger
 }
 
 // NewBacktest function initializes a new backtest instance.
@@ -75,6 +73,7 @@ func NewBacktest(repository asset.Repository, report Report) *Backtest {
 		Strategies: []strategy.Strategy{},
 		Workers:    DefaultBacktestWorkers,
 		LastDays:   DefaultLastDays,
+		Logger:     slog.Default(),
 	}
 }
 
@@ -109,32 +108,14 @@ func (b *Backtest) Run() error {
 	// Run the backtest workers.
 	names := helper.SliceToChan(b.Names)
 	wg := &sync.WaitGroup{}
-	resultsStream := make(chan []Result, b.Workers)
 
 	for i := 0; i < b.Workers; i++ {
 		wg.Add(1)
-
-		go func() {
-			defer wg.Done()
-			results := b.worker(names)
-			resultsStream <- results
-		}()
+		go b.worker(names, wg)
 	}
 
 	// Wait for all workers to finish.
 	wg.Wait()
-	close(resultsStream)
-
-	var allResults []Result
-	for results := range resultsStream {
-		allResults = append(allResults, results...)
-	}
-
-	if b.JsonPath != "" {
-		if err = writeResultsToFile(b.JsonPath, allResults); err != nil {
-			return fmt.Errorf("unable to write results.json: %w", err)
-		}
-	}
 
 	// End report.
 	err = b.report.End()
@@ -145,35 +126,19 @@ func (b *Backtest) Run() error {
 	return nil
 }
 
-func writeResultsToFile(filename string, allResults []Result) error {
-	// Marshal the results into JSON
-	data, err := json.Marshal(allResults)
-	if err != nil {
-		return fmt.Errorf("unable to marshal results: %w", err)
-	}
-
-	// Write the JSON data to a file
-	if err := os.WriteFile(filename, data, 0644); err != nil {
-		return fmt.Errorf("unable to write to file: %w", err)
-	}
-
-	return nil
-}
-
 // worker is a backtesting worker that concurrently executes backtests for individual
 // assets. It receives asset names from the provided channel, and performs backtests
 // using the given strategies.
-func (b *Backtest) worker(names <-chan string) []Result {
+func (b *Backtest) worker(names <-chan string, wg *sync.WaitGroup) {
+	defer wg.Done()
+
 	since := time.Now().AddDate(0, 0, -b.LastDays)
 
 	for name := range names {
-		if !b.NoLog {
-			log.Printf("Backtesting %s...", name)
-		}
-
+		b.Logger.Info("Backtesting started.", "asset", name)
 		snapshots, err := b.repository.GetSince(name, since)
 		if err != nil {
-			log.Printf("Unable to retrieve the snapshots for %s: %v", name, err)
+			b.Logger.Error("Unable to retrieve snapshots.", "asset", name, "error", err)
 			continue
 		}
 
@@ -183,7 +148,7 @@ func (b *Backtest) worker(names <-chan string) []Result {
 		// Backtesting asset has begun.
 		err = b.report.AssetBegin(name, b.Strategies)
 		if err != nil {
-			log.Printf("Unable to asset begin for %s: %v", name, err)
+			b.Logger.Error("Unable to begin asset.", "asset", name, "error", err)
 			continue
 		}
 
@@ -194,16 +159,14 @@ func (b *Backtest) worker(names <-chan string) []Result {
 			actions, outcomes := strategy.ComputeWithOutcome(currentStrategy, snapshotsSplice[0])
 			err = b.report.Write(name, currentStrategy, snapshotsSplice[1], actions, outcomes)
 			if err != nil {
-				log.Printf("Unable to report write for %s: %v", name, err)
+				b.Logger.Error("Unable to write report.", "asset", name, "error", err)
 			}
 		}
 
 		// Backtesting asset had ended
 		err = b.report.AssetEnd(name)
 		if err != nil {
-			log.Printf("Unable to asset end for %s: %v", name, err)
+			b.Logger.Error("Unable to end asset.", "asset", name, "error", err)
 		}
 	}
-
-	return b.report.(*HTMLReport).Results
 }

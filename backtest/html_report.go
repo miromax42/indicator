@@ -8,6 +8,7 @@ import (
 	// Go embed report template.
 	_ "embed"
 	"fmt"
+	"log/slog"
 	"os"
 	"path"
 	"path/filepath"
@@ -26,15 +27,13 @@ const (
 	DefaultWriteStrategyReports = true
 )
 
-var jsonPath string
-
 //go:embed "html_report.tmpl"
 var htmlReportTmpl string
 
 //go:embed "html_asset_report.tmpl"
 var htmlAssetReportTmpl string
 
-// HTMLReport is the backtest HTML report interface.
+// HTMLReport is the backtest HTML report.
 type HTMLReport struct {
 	Report
 
@@ -54,14 +53,8 @@ type HTMLReport struct {
 	// DateFormat is the date format that is used in the reports.
 	DateFormat string
 
-	Results []Result
-}
-
-type Result struct {
-	Asset        string  `json:"asset"`
-	Strategy     string  `json:"strategy"`
-	Outcome      float64 `json:"outcome"`
-	Transactions int     `json:"transactions"`
+	// Logger is the slog logger instance.
+	Logger *slog.Logger
 }
 
 // htmlReportResult encapsulates the outcome of running a strategy.
@@ -86,16 +79,13 @@ type htmlReportResult struct {
 }
 
 // NewHTMLReport initializes a new HTML report instance.
-func NewHTMLReport(outputDir string, withJsonPath ...string) *HTMLReport {
-	if len(withJsonPath) > 0 {
-		jsonPath = withJsonPath[0]
-	}
-
+func NewHTMLReport(outputDir string) *HTMLReport {
 	return &HTMLReport{
 		outputDir:            outputDir,
 		assetResults:         make(map[string][]*htmlReportResult),
 		WriteStrategyReports: DefaultWriteStrategyReports,
 		DateFormat:           helper.DefaultReportDateFormat,
+		Logger:               slog.Default(),
 	}
 }
 
@@ -159,37 +149,24 @@ func (h *HTMLReport) Write(assetName string, currentStrategy strategy.Strategy, 
 		return fmt.Errorf("asset has not begun: %s", assetName)
 	}
 
-	result := &htmlReportResult{
+	// Append current strategy result for the asset.
+	h.assetResults[assetName] = append(results, &htmlReportResult{
 		AssetName:    assetName,
 		StrategyName: currentStrategy.Name(),
 		Action:       <-actions,
 		Since:        <-sinces,
 		Outcome:      <-outcomes * 100,
 		Transactions: <-transactions,
-	}
-
-	// Append current strategy result for the asset.
-	h.assetResults[assetName] = append(results, result)
+	})
 
 	return nil
 }
 
 // AssetEnd is called when backtesting for the given asset ends.
 func (h *HTMLReport) AssetEnd(name string) error {
-	h.muResults.Lock()
-	defer h.muResults.Unlock()
 	results, ok := h.assetResults[name]
 	if !ok {
 		return fmt.Errorf("asset has not begun: %s", name)
-	}
-
-	for _, result := range results {
-		h.Results = append(h.Results, Result{
-			Asset:        result.AssetName,
-			Strategy:     result.StrategyName,
-			Outcome:      result.Outcome,
-			Transactions: result.Transactions,
-		})
 	}
 
 	delete(h.assetResults, name)
@@ -201,6 +178,8 @@ func (h *HTMLReport) AssetEnd(name string) error {
 
 	bestResult := results[0]
 
+	// Report the best result for the current asset.
+	h.Logger.Info("Best outcome", "asset", name, "strategy", bestResult.StrategyName, "outcome", bestResult.Outcome)
 	h.bestResults = append(h.bestResults, bestResult)
 
 	// Write the asset report.
@@ -248,10 +227,7 @@ func (h *HTMLReport) writeAssetReport(name string, results []*htmlReportResult) 
 
 	defer helper.CloseAndLogError(file, "unable to close asset report file")
 
-	tmpl, err := template.New("report").Parse(htmlAssetReportTmpl)
-	if err != nil {
-		return fmt.Errorf("unable to initialize asset report template: %w", err)
-	}
+	tmpl := template.Must(template.New("report").Parse(htmlAssetReportTmpl))
 
 	err = tmpl.Execute(file, model)
 	if err != nil {
@@ -280,10 +256,7 @@ func (h *HTMLReport) writeReport() error {
 
 	defer helper.CloseAndLogError(file, "unable to close main report file")
 
-	tmpl, err := template.New("report").Parse(htmlReportTmpl)
-	if err != nil {
-		return fmt.Errorf("unable to execute main report template: %w", err)
-	}
+	tmpl := template.Must(template.New("report").Parse(htmlReportTmpl))
 
 	err = tmpl.Execute(file, model)
 	if err != nil {
