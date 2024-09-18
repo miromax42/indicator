@@ -63,14 +63,14 @@ func (d *DataReport) Write(assetName string, currentStrategy strategy.Strategy, 
 
 	actionsSplice := helper.Duplicate(actions, 2)
 
-	lastOutcome := helper.Last(outcomes, 1)
+	outcome := helper.Last(outcomes, 1)
 	lastAction := helper.Last(actionsSplice[0], 1)
 	transactions := helper.ChanToSlice(actionsSplice[1])
 
 	result := &DataStrategyResult{
 		Asset:        assetName,
 		Strategy:     currentStrategy,
-		Outcome:      <-lastOutcome,
+		Outcome:      <-outcome * 100,
 		Action:       <-lastAction,
 		Transactions: transactions,
 	}
